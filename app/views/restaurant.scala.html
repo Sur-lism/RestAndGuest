@@ -1,0 +1,88 @@
+@(implicit restaurant: Restaurant, restGuests: List[Guest], allGuests: List[Guest], errorMessage : String)
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/select2@@4.0.13/dist/js/select2.min.js"></script>
+<script>
+        $(document).ready(function() {
+            $(".guestSelect").select2();
+        });
+</script>
+
+<a href="@routes.AppController.index">Return to main menu</a><br>
+<a href="@routes.RestaurantController.restaurants">Return restaurants list</a><br>
+<div class="error">@errorMessage</div>
+@if(restaurant != null) {
+<table>
+    <tr>
+        <th>Name</th>
+        <th>Legal Entity</th>
+        <th>INN</th>
+        <th>Address</th>
+    </tr>
+    <tr>
+        <td>@restaurant.getName()</td>
+        <td>@restaurant.getLegalEntity()</td>
+        <td>@restaurant.getInn()</td>
+        <td>@restaurant.getAddress()</td>
+    </tr>
+</table><br>
+
+
+
+<table>
+    <thead>
+    GUESTS
+    </thead><br>
+    @if(allGuests != null && !allGuests.isEmpty()) {
+    <form method="POST" name="addGuest" action="@routes.RestaurantController.addRelation">
+        <input name="restId" type="hidden" value="@restaurant.getId()" />
+        <select class="guestSelect" name="guestId">
+            @for(guest <- allGuests) {
+            <option value="@guest.getId()">@guest.getFirstName() @guest.getLastName()</option>
+            }
+        </select>
+        <input type="submit" value="Add guest" formtarget = "_parent">
+    </form>
+    }
+    <tr>
+        <th>ID</th>
+        <th>First Name</th>
+        <th>Last Name</th>
+        <th>Email</th>
+        <th>Phone</th>
+    </tr>
+    @for(guest <- restGuests) {
+    <tr>
+        <td>@guest.getId()</td>
+        <td><a href="@routes.GuestController.guest(guest.getId())">@guest.getFirstName()</a></td>
+        <td>@guest.getLastName()</td>
+        <td><a href="mailto:@guest.getEmail()">@guest.getEmail()</a></td>
+        <td><a href="tel:@guest.getPhone()">@guest.getPhone()</a></td>
+        <td>
+            <form method="POST" name="deleteRelGR" action="@routes.RestaurantController.deleteRelation">
+                <input name="guestId" type="hidden" value="@guest.getId()" />
+                <input type="hidden"  name="restId" value="@restaurant.getId()">
+                <input type="submit"  value="Delete" formtarget = "_parent">
+            </form></td>
+    </tr>
+    }
+</table>
+}
+
+<style type="text/css">
+BODY {
+background: white;
+}
+TABLE {
+border-collapse: collapse;
+border: 2px; solid;
+}
+TD, TH {
+padding: 3px;
+border: 1px solid black;
+text-align: left;
+}
+.error {
+    color: red;
+}
+</style>

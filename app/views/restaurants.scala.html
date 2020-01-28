@@ -1,0 +1,84 @@
+@(restaurants: List[Restaurant])
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+<script>
+        $(document).ready(function() {
+
+            $("#addRestaurant").click(function () {
+                $("#popup").show();
+            });
+
+            $("#cancelAddRestaurant").click(function() {
+                $("#popup").hide();
+            });
+
+        });
+</script>
+
+<button id="addRestaurant">Add restaurant to DB</button>
+<h2><a href="@routes.AppController.index">Return to main menu</a></h2>
+<table>
+    <tr>
+        <th>ID</th>
+        <th>Name</th>
+        <th>Legal Entity</th>
+        <th>INN</th>
+        <th>Address</th>
+    </tr>
+    @for(restaurant <- restaurants){
+    <tr>
+        <td>@restaurant.getId()</td>
+        <td><a href="@routes.RestaurantController.restaurant(restaurant.getId())">@restaurant.getName()</a></td>
+        <td>@restaurant.getLegalEntity()</td>
+        <td>@restaurant.getInn()</td>
+        <td>@restaurant.getAddress()</td>
+        <td><a href="@routes.RestaurantController.deleteRestaurant(restaurant.getId())">Delete</a></td>
+    </tr>
+    }
+</table>
+<br>
+<div id="popup">
+    <form method="POST" name="addRest" action="@routes.RestaurantController.addRestDB">
+        Name of restaurant: <input type="text" name="name"><br><br>
+        Legal Entity:       <input type="text" name="legalEntity"><br><br>
+        INN:                <input type="text" name="inn"><br><br>
+        Address:            <input type="text" name="address"><br><br>
+        <input type="submit"  value="Add restaurant">
+        <input type="button" id="cancelAddRestaurant" value="Cancel">
+    </form>
+</div>
+
+<style type="text/css">
+BODY {
+background: white;
+}
+TABLE {
+border-collapse: collapse;
+border: 2px; solid;
+}
+TD, TH {
+padding: 3px;
+border: 1px solid black;
+text-align: left;
+}
+
+form {
+    padding:20px 30px;
+    box-shadow:0 0 15px;
+    float:left;
+
+    width:350px;
+    margin:0px;
+    background-color:white;
+    position: relative;
+}
+
+#popup {
+    opacity:0.92;
+    position: absolute;
+    top: 100px;
+    left: 100px;
+    height: 100%;
+    width: 100%;
+    display: none;
+}
+</style>

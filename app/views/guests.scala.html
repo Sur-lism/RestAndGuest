@@ -1,0 +1,84 @@
+@(guests: List[Guest])
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+<script>
+        $(document).ready(function() {
+
+            $("#addGuest").click(function () {
+                $("#popup").show();
+            });
+
+            $("#cancelAddGuest").click(function() {
+                $("#popup").hide();
+            });
+
+        });
+</script>
+
+<button id="addGuest">Add restaurant to DB</button>
+<h2><a href="@routes.AppController.index">Return to main menu</a></h2>
+<table>
+    <tr>
+        <th>ID</th>
+        <th>First Name</th>
+        <th>Last Name</th>
+        <th>Email</th>
+        <th>Phone</th>
+    </tr>
+    @for(guest <- guests){
+    <tr>
+        <td>@guest.getId()</td>
+        <td><a href="@routes.GuestController.guest(guest.getId())">@guest.getFirstName()</a></td>
+        <td>@guest.getLastName()</td>
+        <td><a href="mailto:@guest.getEmail()">@guest.getEmail()</a></td>
+        <td><a href="tel:@guest.getPhone()">@guest.getPhone()</a></td>
+        <td><a href="@routes.GuestController.deleteGuest(guest.getId())">Delete</a></td>
+    </tr>
+    }
+</table>
+<br>
+<div id="popup">
+    <form method="POST" name="addGuest" action="@routes.GuestController.addGuestDB">
+        First name: <input type="text" name="firstName"><br><br>
+        Last name:  <input type="text" name="lastName"><br><br>
+        Email:      <input type="email" name="email"><br><br>
+        Phone:      <input type="tel" name="phone"><br><br>
+        <input type="submit"  value="Add guest">
+        <input type="button" id="cancelAddGuest" value="Cancel">
+    </form>
+</div>
+
+<style type="text/css">
+BODY {
+background: white;
+}
+TABLE {
+border-collapse: collapse;
+border: 2px; solid;
+}
+TD, TH {
+padding: 3px;
+border: 1px solid black;
+text-align: left;
+}
+
+form {
+    padding:20px 30px;
+    box-shadow:0 0 15px;
+    float:left;
+
+    width:350px;
+    margin:0px;
+    background-color:white;
+    position: relative;
+}
+
+#popup {
+    opacity:0.92;
+    position: absolute;
+    top: 100px;
+    left: 100px;
+    height: 100%;
+    width: 100%;
+    display: none;
+}
+</style>

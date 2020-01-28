@@ -1,0 +1,21 @@
+# Routes
+# This file defines all application routes (Higher priority routes first)
+# ~~~~
+
+# An example controller showing a sample home page
+GET     /                           controllers.AppController.index
+
+GET     /guest/                     controllers.GuestController.guest(id: Long)
+GET     /guests                     controllers.GuestController.guests
+POST    /addGuestDB/                controllers.GuestController.addGuestDB(request: play.mvc.Http.Request)
+GET     /delGuest/                  controllers.GuestController.deleteGuest(id: Long)
+POST    /addGuestRelation/          controllers.GuestController.addRelation(request: play.mvc.Http.Request)
+POST    /deleteGuestRelation/       controllers.GuestController.deleteRelation(request: play.mvc.Http.Request)
+
+
+GET     /restaurant/                controllers.RestaurantController.restaurant(id: Long)
+GET     /restaurants                controllers.RestaurantController.restaurants
+POST    /addRestDB/                 controllers.RestaurantController.addRestDB(request: play.mvc.Http.Request)
+GET     /delRest/                   controllers.RestaurantController.deleteRestaurant(id: Long)
+POST    /addRestRelation/           controllers.RestaurantController.addRelation(request: play.mvc.Http.Request)
+POST    /deleteRestRelation/        controllers.RestaurantController.deleteRelation(request: play.mvc.Http.Request)
